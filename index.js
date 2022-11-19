@@ -50,12 +50,14 @@ app.post('/webhook', (req, res) => {
             const phone_id = changes.value.metadata.phone_number_id;
             const from = changes.value.messages[0].from;
             const msg_body = changes.value.messages[0].text.body;
+            const url = `https://graph.facebook.com/v15.0/${phone_id}/messages?access_token=${ACCESS_TOKEN}`
 
             console.log(phone_id, "*phone_id")
-            console.log(from, "*phone_id")
-            console.log(msg_body, "*phone_id")
+            console.log(from, "*from")
+            console.log(msg_body, "*msg_body")
             console.log(ACCESS_TOKEN, "access_token");
-            
+            console.log(url, "url");
+
             axios.post({
                 method: 'POST',
                 url: `https://graph.facebook.com/v15.0/${phone_id}/messages?access_token=${ACCESS_TOKEN}`,
