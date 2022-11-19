@@ -33,7 +33,7 @@ app.get('/webhook', (req, res) => {
     }
 });
 
-app.post('/webhook', (req, res) => {
+app.post('/webhook', async (req, res) => {
     const body = req.body;
 
     console.log(JSON.stringify(body, null, 2));
@@ -56,11 +56,11 @@ app.post('/webhook', (req, res) => {
             console.log(from, "*from")
             console.log(msg_body, "*msg_body")
             console.log(ACCESS_TOKEN, "access_token");
-            console.log(url, "url");
+            console.log('https://graph.facebook.com/v15.0/'+phone_id+'/messages?access_token='+ACCESS_TOKEN, "url");
 
-            axios.post({
+            await axios.post({
                 method: 'POST',
-                url: url,
+                url: 'https://graph.facebook.com/v15.0/'+phone_id+'/messages?access_token='+ACCESS_TOKEN,
                 data: {
                     messaging_product: 'whatsapp',
                     to: from,
@@ -73,9 +73,9 @@ app.post('/webhook', (req, res) => {
                 }
             });
 
-            return res.status(200).send('OK');
+            res.sendStatus(200);
         } else {
-            return res.status(403);
+            res.sendStatus(403);
         }
     }
 });
