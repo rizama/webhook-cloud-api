@@ -58,7 +58,7 @@ app.post('/webhook', async (req, res) => {
             console.log(ACCESS_TOKEN, "access_token");
             console.log('https://graph.facebook.com/v15.0/'+phone_id+'/messages?access_token='+ACCESS_TOKEN, "url");
 
-            await axios.post({
+            await axios({
                 method: 'POST',
                 url: 'https://graph.facebook.com/v15.0/'+phone_id+'/messages?access_token='+ACCESS_TOKEN,
                 data: {
