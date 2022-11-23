@@ -50,6 +50,7 @@ app.post('/webhook', async (req, res) => {
             const phone_id = changes.value.metadata.phone_number_id;
             const from = changes.value.messages[0].from;
             const msg_body = changes.value.messages[0].text.body;
+            const msg_id = changes.value.messages[0].id;
             const url = encodeURIComponent(`https://graph.facebook.com/v15.0/${phone_id}/messages?access_token=${ACCESS_TOKEN}`)
 
             console.log(phone_id, "*phone_id")
@@ -60,13 +61,26 @@ app.post('/webhook', async (req, res) => {
 
             await axios({
                 method: 'POST',
-                url: 'https://graph.facebook.com/v15.0/'+phone_id+'/messages?access_token='+ACCESS_TOKEN,
+                url: url,
                 data: {
                     messaging_product: 'whatsapp',
                     to: from,
                     text: {
                         body: `Hi Sam, your message is ${msg_body}`,
                     }
+                },
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            await axios({
+                method: 'POST',
+                url: 'https://graph.facebook.com/v15.0/'+phone_id+'/messages?access_token='+ACCESS_TOKEN,
+                data: {
+                    messaging_product: 'whatsapp',
+                    status: "read",
+                    message_id: msg_id
                 },
                 headers: {
                     'Content-Type': 'application/json'
