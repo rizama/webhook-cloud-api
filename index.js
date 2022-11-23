@@ -51,6 +51,7 @@ app.post('/webhook', async (req, res) => {
             const from = changes.value.messages[0].from;
             const msg_body = changes.value.messages[0].text.body;
             const msg_id = changes.value.messages[0].id;
+            const contact_name = changes.value.contacts[0].profile.name || 'stranger';
             const url = `https://graph.facebook.com/v15.0/${phone_id}/messages?access_token=${ACCESS_TOKEN}`;
 
             console.log(phone_id, "*phone_id")
@@ -66,7 +67,7 @@ app.post('/webhook', async (req, res) => {
                     messaging_product: 'whatsapp',
                     to: from,
                     text: {
-                        body: `Hi Sam, your message is ${msg_body}`,
+                        body: `Hi ${contact_name}, your message is ${msg_body}`,
                     }
                 },
                 headers: {
