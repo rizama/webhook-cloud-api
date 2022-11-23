@@ -60,6 +60,22 @@ app.post('/webhook', async (req, res) => {
             console.log(ACCESS_TOKEN, "access_token");
             console.log('https://graph.facebook.com/v15.0/'+phone_id+'/messages?access_token='+ACCESS_TOKEN, "url");
 
+            // Mark as Read
+            await axios({
+                method: 'POST',
+                url: 'https://graph.facebook.com/v15.0/'+phone_id+'/messages',
+                data: {
+                    messaging_product: 'whatsapp',
+                    status: "read",
+                    message_id: msg_id
+                },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${ACCESS_TOKEN}`
+                }
+            });
+
+            // Reply the message
             await axios({
                 method: 'POST',
                 url: url,
@@ -72,20 +88,6 @@ app.post('/webhook', async (req, res) => {
                 },
                 headers: {
                     'Content-Type': 'application/json'
-                }
-            });
-
-            await axios({
-                method: 'POST',
-                url: 'https://graph.facebook.com/v15.0/'+phone_id+'/messages',
-                data: {
-                    messaging_product: 'whatsapp',
-                    status: "read",
-                    message_id: msg_id
-                },
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${ACCESS_TOKEN}`
                 }
             });
 
