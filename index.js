@@ -51,7 +51,7 @@ app.post('/webhook', async (req, res) => {
             const from = changes.value.messages[0].from;
             const msg_body = changes.value.messages[0].text.body;
             const msg_id = changes.value.messages[0].id;
-            const url = encodeURIComponent(`https://graph.facebook.com/v15.0/${phone_id}/messages?access_token=${ACCESS_TOKEN}`)
+            const url = `https://graph.facebook.com/v15.0/${phone_id}/messages?access_token=${ACCESS_TOKEN}`;
 
             console.log(phone_id, "*phone_id")
             console.log(from, "*from")
