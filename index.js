@@ -173,3 +173,16 @@ async function checkAwb(ACCESS_TOKEN, from, url, data) {
 app.get('/', (req, res) => {
     res.status(200).send('welcome to whatsapp webhook cloud api!');
 });
+
+// Webhook message bird
+app.get('/message-bird/webhook', (req, res) => {
+    const body = req.body;
+    const headers = req.headers;
+
+    console.log(JSON.stringify(body, null, 2), "*Body");
+    console.log(JSON.stringify(headers, null, 2), "*headers");
+
+    return true;
+    
+});
+
