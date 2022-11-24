@@ -182,7 +182,17 @@ app.get('/message-bird/webhook', (req, res) => {
     console.log(JSON.stringify(body, null, 2), "*Body");
     console.log(JSON.stringify(headers, null, 2), "*headers");
 
-    return true;
-    
+    res.status(200).send('/message-bird/webhook GET');
 });
 
+app.post('/message-bird/webhook', (req, res) => {
+    const body = req.body;
+    const headers = req.headers;
+
+    console.log(JSON.stringify(body, null, 2), "*Body");
+    console.log(JSON.stringify(headers, null, 2), "*headers");
+
+    res.status(200).send('/message-bird/webhook POST');
+
+    
+});
