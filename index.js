@@ -181,7 +181,6 @@ app.get('/message-bird/webhook', (req, res) => {
     const headers = req.headers;
 
     console.log(JSON.stringify(body, null, 2), '*Body');
-    console.log(JSON.stringify(headers, null, 2), '*headers');
 
     res.status(200).send('/message-bird/webhook GET');
 });
@@ -190,13 +189,21 @@ app.post('/message-bird/webhook', async (req, res) => {
     const body = req.body;
     const headers = req.headers;
 
-    console.log(JSON.stringify(body, null, 2), '*Body');
-    console.log(JSON.stringify(headers, null, 2), '*headers');
+    console.log(JSON.stringify(body, null, 2), '*Body Webhook');
 
     const contactName = body?.contact?.displayName ?? 'Stranger';
-    const messageDestination = body?.message?.to ?? null;
+    const messageDestination = body?.message?.from ?? null;
     const messageChannelId = body?.message?.channelId ?? null;
     const messageContent = body?.message?.content?.text ?? null;
+
+    const data = {
+        contactName, 
+        messageDestination,
+        messageChannelId,
+        messageContent
+    }
+
+    console.log(JSON.stringify(data, null, 2), '*data Webhook');
 
     const params = {
         to: `${messageDestination}`, // destination number
@@ -222,8 +229,7 @@ app.post('/message-bird/webhook-1', (req, res) => {
     const body = req.body;
     const headers = req.headers;
 
-    console.log(JSON.stringify(body, null, 2), '*Body');
-    console.log(JSON.stringify(headers, null, 2), '*headers');
+    console.log(JSON.stringify(body, null, 2), '*Body Webhook 1');
 
     res.status(200).send('/message-bird/webhook POST WEBHOOK 1');
 });
