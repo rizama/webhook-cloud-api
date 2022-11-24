@@ -1,6 +1,7 @@
+require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
-require('dotenv').config();
+const messagebird = require('messagebird')('nnbPKyXMk506ljMTKC7PYfWZq');
 
 const app = express();
 
@@ -91,10 +92,10 @@ app.post('/webhook', async (req, res) => {
                 const tokpedGokil = 50000;
                 const data = {
                     tokpedHalu,
-                    tokpedGokil
-                }
+                    tokpedGokil,
+                };
                 const urlCheckAwb = `https://graph.facebook.com/v15.0/${phone_id}/messages`;
-                await checkAwb(ACCESS_TOKEN, from, urlCheckAwb, data)
+                await checkAwb(ACCESS_TOKEN, from, urlCheckAwb, data);
             } else {
                 await defaultReply(contact_name, msg_body, url, from);
             }
@@ -162,7 +163,7 @@ async function checkAwb(ACCESS_TOKEN, from, url, data) {
             },
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${ACCESS_TOKEN}`
+                Authorization: `Bearer ${ACCESS_TOKEN}`,
             },
         });
     } catch (error) {
@@ -179,20 +180,50 @@ app.get('/message-bird/webhook', (req, res) => {
     const body = req.body;
     const headers = req.headers;
 
-    console.log(JSON.stringify(body, null, 2), "*Body");
-    console.log(JSON.stringify(headers, null, 2), "*headers");
+    console.log(JSON.stringify(body, null, 2), '*Body');
+    console.log(JSON.stringify(headers, null, 2), '*headers');
 
     res.status(200).send('/message-bird/webhook GET');
 });
 
-app.post('/message-bird/webhook', (req, res) => {
+app.post('/message-bird/webhook', async (req, res) => {
     const body = req.body;
     const headers = req.headers;
 
-    console.log(JSON.stringify(body, null, 2), "*Body");
-    console.log(JSON.stringify(headers, null, 2), "*headers");
+    console.log(JSON.stringify(body, null, 2), '*Body');
+    console.log(JSON.stringify(headers, null, 2), '*headers');
+
+    const contactName = body?.contact?.displayName ?? 'Stranger';
+    const messageDestination = body?.message?.to ?? null;
+    const messageChannelId = body?.message?.channelId ?? null;
+    const messageContent = body?.message?.content?.text ?? null;
+
+    const params = {
+        to: `${messageDestination}`, // destination number
+        from: `${messageChannelId}`, // channel id
+        type: 'text',
+        content: {
+            text: `Hello ${contactName}, your message is ${messageContent}`, // message
+        },
+        reportUrl: 'https://example.com/reports',
+    };
+
+    await messagebird.conversations.send(params, function (err, response) {
+        if (err) {
+        return console.log(err);
+        }
+        console.log(response);
+    });
 
     res.status(200).send('/message-bird/webhook POST');
+});
 
-    
+app.post('/message-bird/webhook-1', (req, res) => {
+    const body = req.body;
+    const headers = req.headers;
+
+    console.log(JSON.stringify(body, null, 2), '*Body');
+    console.log(JSON.stringify(headers, null, 2), '*headers');
+
+    res.status(200).send('/message-bird/webhook POST WEBHOOK 1');
 });
