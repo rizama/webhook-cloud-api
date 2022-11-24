@@ -1,7 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
-const messagebird = require('messagebird')('nnbPKyXMk506ljMTKC7PYfWZq');
+const ACCESS_TOKEN_MB = process.env.ACCESS_TOKEN_MB;
+const messagebird = require('messagebird')(ACCESS_TOKEN_MB);
 
 const app = express();
 
