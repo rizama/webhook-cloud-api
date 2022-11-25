@@ -38,9 +38,6 @@ app.get('/webhook', (req, res) => {
 app.post('/webhook', async (req, res) => {
     const body = req.body;
 
-    // console.log(JSON.stringify(body, null, 2), "debug");
-    // console.log('debug on');
-
     if (body.object) {
         if (
             body.entry &&
@@ -48,6 +45,9 @@ app.post('/webhook', async (req, res) => {
             body.entry[0].changes[0].value.messages &&
             body.entry[0].changes[0].value.messages[0]
         ) {
+
+            console.log(JSON.stringify(body, null, 2));
+
             const changes = body.entry[0].changes[0];
 
             const phone_id = changes.value.metadata.phone_number_id;
