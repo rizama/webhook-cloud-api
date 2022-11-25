@@ -206,24 +206,26 @@ app.post('/message-bird/webhook', async (req, res) => {
 
     console.log(JSON.stringify(data, null, 2), '*data Webhook');
 
-    const params = {
-        to: `${messageDestination}`, // destination number
-        from: `${messageChannelId}`, // channel id
-        type: 'text',
-        content: {
-            text: `Hello ${contactName}, your message is ${messageContent}`, // message
-        },
-        reportUrl: 'https://example.com/reports',
-    };
+    if (messageDestination) {
+        const params = {
+            to: `${messageDestination}`, // destination number
+            from: `${messageChannelId}`, // channel id
+            type: 'text',
+            content: {
+                text: `Hello ${contactName}, your message is ${messageContent}`, // message
+            },
+            reportUrl: 'https://example.com/reports',
+        };
+    
+        await messagebird.conversations.send(params, function (err, response) {
+            if (err) {
+            return console.log(err);
+            }
+            console.log(response);
+        });
+    }
 
-    await messagebird.conversations.send(params, function (err, response) {
-        if (err) {
-        return console.log(err);
-        }
-        console.log(response);
-    });
-
-    res.status(200).send('/message-bird/webhook POST');
+    res.status(200).send('ok');
 });
 
 app.post('/message-bird/webhook-1', (req, res) => {
