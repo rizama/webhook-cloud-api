@@ -38,7 +38,8 @@ app.get('/webhook', (req, res) => {
 app.post('/webhook', async (req, res) => {
     const body = req.body;
 
-    console.log(JSON.stringify(body, null, 2));
+    console.log(JSON.stringify(body, null, 2), "debug");
+    console.log('debug on');
 
     if (body.object) {
         if (
